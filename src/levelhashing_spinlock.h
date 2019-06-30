@@ -4,6 +4,8 @@
  * Spin lock using xchg
  * Copied from http://locklessinc.com/articles/locks/.
  */
+#ifndef LOCK_TEST_LEVELHASHING_SPINLOCK_H_
+#define LOCK_TEST_LEVELHASHING_SPINLOCK_H_
 
 #ifndef LOCK_TEST_ABSTRACT_LOCK_H_
 #include "abstract_lock.h"
@@ -77,5 +79,7 @@ void LevelhashingSpinlock::Unlock() {
 std::string LevelhashingSpinlock::GetName() {
     return "LevelhashingSpinlock";
 }
+
+#endif
 
 } // namespace locktest

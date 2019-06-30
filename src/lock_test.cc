@@ -1,5 +1,5 @@
 /*
- * This is the main file of locktest.
+ * This is the main file of lock test.
  */
 
 #ifndef LOCK_TEST_ABSTRACT_LOCK_H_
@@ -10,7 +10,7 @@
 #include "cpp_mutex_lock.h"
 #endif
 
-#ifdef LOCK_TEST_ABSTRACT_LOCK_H_
+#ifndef LOCK_TEST_LEVELHASHING_SPINLOCK_H_
 #include "levelhashing_spinlock.h"
 #endif
 
