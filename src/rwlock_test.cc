@@ -14,6 +14,10 @@
 #include "abstract_rwlock.h"
 #endif
 
+#ifndef LOCK_TEST_CCEH_SELF_RW_LOCK_H_
+#include "cceh_self_rwlock.h"
+#endif
+
 #include <thread>
 #include <iostream>
 #include <sys/time.h>
@@ -23,7 +27,7 @@
  * the other half to run read lock.
  */
 #define MAX_NR_THREADS      8
-#define NR_ADD_OPERATIONS   1000*1000*1
+#define NR_ADD_OPERATIONS   1000*1000
 
 volatile unsigned long counter = 0;
 unsigned long cur_counter = 0;
@@ -92,5 +96,22 @@ int main() {
         times[1] = mysecond();
         PrintResult(cpp_shared_mutex_lock, i);
     }
+    //test cceh self rwlock, there is a bug in it
+    // locktest::CcehSelfRwLock *cceh_self_rwlock = new locktest::CcehSelfRwLock();;
+    // for(int i=2; i<=MAX_NR_THREADS; i+=2) {
+    //     counter = 0;
+    //     times[0] = mysecond();
+    //     for(int j=0; j<i; j++) {
+    //         if(j%2 == 0)
+    //             threads[j] = new std::thread(Read, cceh_self_rwlock, NR_ADD_OPERATIONS);
+    //         else
+    //             threads[j] = new std::thread(Add, cceh_self_rwlock, NR_ADD_OPERATIONS/(i/2));
+    //     }
+    //     for(int j=0; j<i; j++) {
+    //         threads[j]->join();
+    //     }
+    //     times[1] = mysecond();
+    //     PrintResult(cceh_self_rwlock, i);
+    // }
     return 0;
 }
