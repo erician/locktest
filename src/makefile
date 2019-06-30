@@ -1,4 +1,4 @@
-.PHONY: clean lock-test
+.PHONY: clean  lock-test rwlock-test
 
 DEFAULT: lock-test
 # Define the tools we are going to use
@@ -6,7 +6,7 @@ CC= g++
 LD = g++
 
 LIBS = -lm -lpthread -lrt -latomic
-CFLAGS = -g -Wall -Wno-unused -Wno-sign-compare -std=c++17 -I. -O3
+CFLAGS = -g -Wall -Wno-unused -Wno-sign-compare -std=c++17 -I.
 OBJDIR = ../obj
 
 OBJS += $(OBJDIR)/lock_test.o
