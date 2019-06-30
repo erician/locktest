@@ -44,7 +44,6 @@ void Add(locktest::AbstractRwLock *rwlock, int nr_ops) {
         counter++;
         rwlock->WriteUnlock();
     }
-    std::cout << "Add: " << mysecond() - sub_time << std::endl;
 }
 
 void Read(locktest::AbstractRwLock *rwlock, int nr_ops) {
@@ -55,7 +54,6 @@ void Read(locktest::AbstractRwLock *rwlock, int nr_ops) {
         cur_counter = counter;
         rwlock->ReadUnlock();
     }
-    std::cout << "Read: " << mysecond() - sub_time << std::endl;
 }
 
 void PrintResult(locktest::AbstractRwLock *rwlock, int nr_thread) {
@@ -76,6 +74,8 @@ int main() {
     std::thread *threads[MAX_NR_THREADS];
     times = new double [2];
     //test cpp mutex lock
+    //the result looks like weird in my desktop computer, it looks normal in our servers,
+    //seriously, I do not know why.
     locktest::CppSharedMutexLock *cpp_shared_mutex_lock = new locktest::CppSharedMutexLock();;
     for(int i=2; i<=MAX_NR_THREADS; i+=2) {
         counter = 0;

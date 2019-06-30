@@ -5,7 +5,7 @@
             "name": "(gdb) WSL Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/mnt/e/locktest/src/lock-test",
+            "program": "/mnt/e/locktest/src/rwlock-test",
             "args": [""],
             "stopAtEntry": false,
             "cwd": "/mnt/e/locktest/src",
