@@ -12,14 +12,21 @@
 #define NR_ADD_OPERATIONS   1000*1000*100
 
 volatile unsigned long long counters[MAX_NR_THREADS];
+volatile unsigned long long thread_epoch[MAX_NR_THREADS][MAX_NR_THREADS]; // default INF
 unsigned long long tmps[MAX_NR_THREADS];
+
+// volatile unsigned long long alignas(64) counters[MAX_NR_THREADS];
+// unsigned long long alignas(64) tmps[MAX_NR_THREADS];
+
 double *times;
 
 void Add(int nr_ops, int thread_id) {
     for(int i=0; i<nr_ops; i++) {
         for(int i=1; i<=MAX_NR_THREADS; i++) {
-            if(i != thread_id)
-                tmps[thread_id-1]= counters[i-1];  
+            if(i != thread_id) {
+                tmps[thread_id-1]= counters[i-1];
+                thread_epoch[thread_id-1][i-1] = counters[i-1];
+            }
         }
         counters[thread_id-1] += 1;
     }
