@@ -5,33 +5,17 @@
 #include <iostream>
 #include <sys/time.h>
 
-#define CAS(_p, _u, _v)  (__atomic_compare_exchange_n \
-    (_p, _u, _v, false, __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE))
-
 #define MAX_NR_THREADS      4
 #define NR_ADD_OPERATIONS   1000*1000*100
 
-volatile unsigned long long counters[MAX_NR_THREADS];
-volatile unsigned long long thread_epoch[MAX_NR_THREADS][MAX_NR_THREADS]; // default INF
-unsigned long long tmps[MAX_NR_THREADS];
-
-// volatile unsigned long long alignas(64) counters[MAX_NR_THREADS];
-// unsigned long long alignas(64) tmps[MAX_NR_THREADS];
-
+volatile unsigned long long counter = 0;
 double *times;
 
-thread_local unsigned long long epoch_time = 0;
-
-void Add(int nr_ops, int thread_id) {
+void Add(int nr_ops) {
+    unsigned long long tmp = counter;
     for(int i=0; i<nr_ops; i++) {
-        if(i%100 == 0)
-        for(int i=1; i<=MAX_NR_THREADS; i++) {
-            if(i != thread_id) {
-                tmps[thread_id-1]= counters[i-1];
-                thread_epoch[thread_id-1][i-1] = counters[i-1];
-            }
-        }
-        counters[thread_id-1] += 1;
+        // the counter is not coherent.
+        tmp = counter;
     }
 }
 
@@ -54,10 +38,10 @@ int main() {
     times = new double [2];
     //test cpp mutex lock
     for(int i=1; i<=MAX_NR_THREADS; i++) {
-        counters[i-1] = 0;
+        counter = 0;
         times[0] = mysecond();
         for(int j=0; j<i; j++)
-            threads[j] = new std::thread(Add, NR_ADD_OPERATIONS/i, i);
+            threads[j] = new std::thread(Add, NR_ADD_OPERATIONS/i);
         for(int j=0; j<i; j++)
             threads[j]->join();
         times[1] = mysecond();

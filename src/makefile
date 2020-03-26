@@ -1,4 +1,4 @@
-.PHONY: clean  lock-test rwlock-test cas-test thread-clock-test
+.PHONY: clean  lock-test rwlock-test cas-test thread-clock-test cache-coherence-test
 
 DEFAULT: lock-test
 # Define the tools we are going to use
@@ -12,6 +12,10 @@ OBJDIR = ../obj
 OBJS += $(OBJDIR)/lock_test.o
 
 JUNK = *~ $(OBJDIR)/*.o $(OBJDIR)/*.a $(OBJDIR)/*_ut  *-test
+
+cache-coherence-test: $(OBJDIR)/cache_coherence_test.o
+	$(LD) $(CFLAGS) -o $@ $^ $(LIBS)
+	./cache-coherence-test
 
 thread-clock-test: $(OBJDIR)/thread_clock_test.o
 	$(LD) $(CFLAGS) -o $@ $^ $(LIBS)
@@ -29,6 +33,8 @@ rwlock-test:  $(OBJDIR)/rwlock_test.o
 	$(LD) $(CFLAGS) -o $@ $^ $(LIBS)
 	./rwlock-test
 
+$(OBJDIR)/cache_coherence_test.o: cache_coherence_test.cc
+	$(CC) $(CFLAGS) -c -o $@ $<
 $(OBJDIR)/thread_clock_test.o: thread_clock_test.cc
 	$(CC) $(CFLAGS) -c -o $@ $<
 $(OBJDIR)/lock_test.o: lock_test.cc
