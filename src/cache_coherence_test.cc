@@ -12,10 +12,9 @@ volatile unsigned long long counter = 0;
 double *times;
 
 void Add(int nr_ops) {
-    unsigned long long tmp = counter;
     for(int i=0; i<nr_ops; i++) {
         // the counter is not coherent.
-        tmp = counter;
+        counter += 1;
     }
 }
 
